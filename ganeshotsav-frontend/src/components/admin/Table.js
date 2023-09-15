@@ -8,8 +8,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { useState , useEffect } from 'react';
 import axios from 'axios'
+import DeleteButton from './DeleteButton';
 
-// row =[(),(),()]
 
 const Tables = () => {
   const [table, setTable] = useState([]);
@@ -26,17 +26,14 @@ const Tables = () => {
     fetchMyAPI(); 
   }, []);
 
-  function createRow(name,mail,amount,hostelName,roomNumber,committeeMemberName) {
-    return { name,mail,amount,hostelName,roomNumber,committeeMemberName};
-  }
   
   function subtotal(items) {
     return items.map(({ amount }) => amount).reduce((sum, i) => sum + i, 0);
   }
   
- 
+
+
   const handleBGcolor = (hostelName) => {
-      console.log(hostelName);
       if(hostelName==='MHR'){
           return {background: '#AED6F1'};
       }
@@ -72,6 +69,7 @@ const Tables = () => {
             <TableCell align="right" sx={{fontWeight: '600', textTransform: 'uppercase', color:'#EAEDED'}}>Room No.</TableCell>
             <TableCell align="right" sx={{fontWeight: '600', textTransform: 'uppercase', color:'#EAEDED'}}>Committee Member Name</TableCell>
             <TableCell align="right" sx={{fontWeight: '600', textTransform: 'uppercase', color:'#EAEDED'}}>Amount</TableCell>
+            <TableCell align="center" sx={{fontWeight: '600', textTransform: 'uppercase', color:'#EAEDED'}}></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -83,6 +81,7 @@ const Tables = () => {
               <TableCell align="right">{row.roomNumber}</TableCell>
               <TableCell align="right">{row.committeeMemberName}</TableCell>
               <TableCell align="right">{row.amount}</TableCell>
+              <TableCell align="center"><DeleteButton id={row._id} /></TableCell>
             </TableRow>
           ))}
           <TableRow>
