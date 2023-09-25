@@ -6,7 +6,7 @@ import axios from 'axios';
 
 const DeleteButton = (id) => {
     async function handleData() {
-        console.log(id.id);
+        //console.log(id.id);
         try {
           await axios.delete(`http://localhost:5002/donation/deletedonor/${id.id}`);
          } catch (error) {

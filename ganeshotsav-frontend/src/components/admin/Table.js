@@ -9,6 +9,7 @@ import Paper from '@mui/material/Paper';
 import { useState , useEffect } from 'react';
 import axios from 'axios'
 import DeleteButton from './DeleteButton';
+import SendPDFButton from './SendPDFButton';
 
 
 const Tables = () => {
@@ -58,22 +59,86 @@ const Tables = () => {
       <Table sx={{ minWidth: 700 }} aria-label="spanning table">
         <TableHead>
           <TableRow>
-            <TableCell align="center" colSpan={6} sx={{fontWeight: '600', textTransform: 'uppercase'}}>
+            <TableCell
+              align="center"
+              colSpan={6}
+              sx={{ fontWeight: "600", textTransform: "uppercase" }}
+            >
               Details of All Donaters
             </TableCell>
           </TableRow>
-          <TableRow sx={{background:'#35393f'}}>
-            <TableCell sx={{fontWeight: '600', textTransform: 'uppercase', color:'#EAEDED'}}>Name</TableCell>
-            <TableCell align="right" sx={{fontWeight: '600', textTransform: 'uppercase', color:'#EAEDED'}}>Mail</TableCell>
-            <TableCell align="right" sx={{fontWeight: '600', textTransform: 'uppercase', color:'#EAEDED'}}>Hostel Name</TableCell>
-            <TableCell align="right" sx={{fontWeight: '600', textTransform: 'uppercase', color:'#EAEDED'}}>Room No.</TableCell>
-            <TableCell align="right" sx={{fontWeight: '600', textTransform: 'uppercase', color:'#EAEDED'}}>Committee Member Name</TableCell>
-            <TableCell align="right" sx={{fontWeight: '600', textTransform: 'uppercase', color:'#EAEDED'}}>Amount</TableCell>
-            <TableCell align="center" sx={{fontWeight: '600', textTransform: 'uppercase', color:'#EAEDED'}}></TableCell>
+          <TableRow sx={{ background: "#35393f" }}>
+            <TableCell
+              sx={{
+                fontWeight: "600",
+                textTransform: "uppercase",
+                color: "#EAEDED",
+              }}
+            >
+              Name
+            </TableCell>
+            <TableCell
+              align="right"
+              sx={{
+                fontWeight: "600",
+                textTransform: "uppercase",
+                color: "#EAEDED",
+              }}
+            >
+              Mail
+            </TableCell>
+            <TableCell
+              align="right"
+              sx={{
+                fontWeight: "600",
+                textTransform: "uppercase",
+                color: "#EAEDED",
+              }}
+            >
+              Hostel Name
+            </TableCell>
+            <TableCell
+              align="right"
+              sx={{
+                fontWeight: "600",
+                textTransform: "uppercase",
+                color: "#EAEDED",
+              }}
+            >
+              Room No.
+            </TableCell>
+            <TableCell
+              align="right"
+              sx={{
+                fontWeight: "600",
+                textTransform: "uppercase",
+                color: "#EAEDED",
+              }}
+            >
+              Committee Member Name
+            </TableCell>
+            <TableCell
+              align="right"
+              sx={{
+                fontWeight: "600",
+                textTransform: "uppercase",
+                color: "#EAEDED",
+              }}
+            >
+              Amount
+            </TableCell>
+            <TableCell
+              align="center"
+              sx={{
+                fontWeight: "600",
+                textTransform: "uppercase",
+                color: "#EAEDED",
+              }}
+            ></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {table.map((row,index) => (
+          {table.map((row, index) => (
             <TableRow key={index} sx={handleBGcolor(row.hostelName)}>
               <TableCell>{row.name}</TableCell>
               <TableCell align="right">{row.mail}</TableCell>
@@ -81,7 +146,9 @@ const Tables = () => {
               <TableCell align="right">{row.roomNumber}</TableCell>
               <TableCell align="right">{row.committeeMemberName}</TableCell>
               <TableCell align="right">{row.amount}</TableCell>
-              <TableCell align="center"><DeleteButton id={row._id} /></TableCell>
+              <TableCell align="center">
+                <DeleteButton id={row._id} />     <SendPDFButton id={row._id} />
+              </TableCell>
             </TableRow>
           ))}
           <TableRow>

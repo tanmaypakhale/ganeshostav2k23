@@ -9,4 +9,7 @@ router.get("/getalldonors",donorControllers.controllers.getDonor);
 
 router.delete("/deletedonor/:id",donorControllers.controllers.deleteDonor);
 
+router.get("/sendmail", donorControllers.controllers.sendMailPDF);
+
+router.get("/getdonor/:id", donorControllers.controllers.getDonorbyId);
 module.exports = router;

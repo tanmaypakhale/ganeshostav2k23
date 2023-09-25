@@ -9,6 +9,7 @@ const donorSchema = new mongoose.Schema({
     hostelName: {type: String},
     amount: {type: Number},
     committeeMemberName: {type: String},
+    
 });
 
 module.exports = mongoose.model("donor",donorSchema);
