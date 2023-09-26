@@ -12,7 +12,7 @@ async function generatePDF(id,donor) {
     }, donor);
 
 
-    await page.goto(`http://localhost:3000/reciept`, {
+    await page.goto(`https://ganeshostav2k23.vercel.app/reciept`, {
       waitUntil: "networkidle2",
     });
 
