@@ -6,9 +6,8 @@ import axios from 'axios'
 const SendPDFButton = (id) => {
   async function handleData() {
     try {
-      const result = await axios.get(`http://localhost:5002/donation/getdonor/${id.id}`);
-      const donor = result.data.donor;
-      console.log(donor);
+      const result = await axios.get(`http://localhost:5002/donation/sendmail/${id.id}`,);
+      console.log(result.data.donor);
     } catch (error) {
       console.log(error);
     }

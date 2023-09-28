@@ -2,20 +2,24 @@ const nodemailer = require("nodemailer");
 const puppeteer = require("puppeteer");
 const Donor = require("../models/donor");
 
-async function generatePDF(id) {
+async function generatePDF(id, donor) {
   try {
     const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
 
-    await page.goto(`http://localhost:3000/reciept`, {
+    await page.evaluateOnNewDocument((data) => {
+      localStorage.setItem("donor", JSON.stringify(data));
+    }, donor);
+
+    await page.goto(`https://ganeshostav2k23.vercel.app/reciept`, {
       waitUntil: "networkidle2",
     });
 
-    await page.waitForFunction(() => localStorage.getItem("donor") !== null);
-
-    const dynamicData = await page.evaluate(() => {
+    const storedDataString = await page.evaluate(() => {
       return localStorage.getItem("donor");
     });
+    const storedData = JSON.parse(storedDataString);
+    console.log("Stored data:", storedData);
 
     const pdfn = await page.pdf({
       printBackground: true,
@@ -30,11 +34,48 @@ async function generatePDF(id) {
       },
     });
 
+    setTimeout(async () => {
       await browser.close();
       console.log("successfully created pdf");
+    }, 2000);
   } catch (err) {
     console.log(err);
   }
+}
+
+async function sendMailTo(id, donor) {
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    host: "smtp.gmail.com",
+    auth: {
+      user: "tanmaypakhale@gmail.com",
+      pass: "ijhuwyobyrqqkeoi",
+    },
+  });
+
+  const mailOptions = {
+    from: "tanmaypakhale@gmail.com",
+    to: donor.mail,
+    subject: "This is a demo mail",
+    attachments: [
+      {
+        filename: "poster.png",
+        path: __dirname + "/poster.png",
+      },
+      {
+        filename: `${id}.pdf`,
+        path: `${id}.pdf`,
+      },
+    ],
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log("error occured due to", error);
+    } else {
+      console.log(`Email sent to ${donor.mail}`);
+    }
+  });
 }
 
 async function sendMailTo(id,donor){
@@ -73,7 +114,7 @@ async function sendMailTo(id,donor){
 }
 
 const sendMailPDF = async (req, res) => {
-    const id = req.body;
+    const id = req.params.id;
     let donor;
     try {
       donor = await Donor.findById(id);
@@ -84,7 +125,7 @@ const sendMailPDF = async (req, res) => {
       return res.status(404).json({ message: "No Donors Found" });
     }
     console.log(donor);
-    await generatePDF(id);
+    await generatePDF(id,donor);
     await sendMailTo(id,donor);
 
     return res.status(200).json({ donor });
