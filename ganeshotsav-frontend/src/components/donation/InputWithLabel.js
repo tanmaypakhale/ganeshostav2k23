@@ -37,14 +37,17 @@ const InputWithLabel = (props) => {
     }
 
     return (
-    <Wrapper>
+      <Wrapper>
         <Label>{label}</Label>
-        <Input value={value}
-        onChange={handleValueChange}
-        type={type}
-        placeholder={placeholder} />
-    </Wrapper>
-  )
+        <Input
+          value={value}
+          onChange={handleValueChange}
+          type={type}
+          placeholder={placeholder}
+          required
+        />
+      </Wrapper>
+    );
 }
 
 export default InputWithLabel

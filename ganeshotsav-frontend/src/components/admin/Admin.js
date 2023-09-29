@@ -1,5 +1,5 @@
 import React from 'react'
-import Navbar from '../donation/Navbar';
+import Navbar from './Navbar';
 import Tables from './Table'
 
 const Admin = () => {

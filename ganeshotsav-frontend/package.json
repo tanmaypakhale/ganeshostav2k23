@@ -20,6 +20,7 @@
     "react-scripts": "5.0.1",
     "redux-devtools-extension": "^2.13.9",
     "styled-components": "^6.0.8",
+    "sweetalert2": "^11.7.31",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

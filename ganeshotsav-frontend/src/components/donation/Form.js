@@ -7,11 +7,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { connect } from "react-redux";
 import { getActions } from "../../store/action/donorActions";
-
-
-
+import Swal from "sweetalert2";
 const Form = () => {
-
   const [mail, setMail] = useState("");
   const [name, setName] = useState("");
   const [amount, setAmount] = useState("");
@@ -38,7 +35,8 @@ const Form = () => {
           "http://localhost:5002/donation/add-donor",
           donorDetails
         )
-      ).data;
+      );
+      console.log(result);
       setMail("");
       setName("");
       setAmount("");
@@ -46,7 +44,12 @@ const Form = () => {
       setBlock("");
       setRoomNo("");
       setCommitteeMemberName("");
+
+      await Swal.fire(`Congratulations Money  Submitted by ${name} and Mail sent to ${mail} `);
+      window.location.href = "/";
     } catch (error) {
+      await Swal.fire(error.response.data.message);
+      window.location.href = "/";
       console.log(error);
     }
   }
@@ -144,4 +147,4 @@ const mapActionsToProps = (dispatch) => {
   };
 };
 
-export default connect(null,mapActionsToProps)(Form);
+export default connect(null, mapActionsToProps)(Form);

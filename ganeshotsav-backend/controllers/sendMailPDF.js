@@ -1,6 +1,19 @@
 const nodemailer = require("nodemailer");
 const puppeteer = require("puppeteer");
 const Donor = require("../models/donor");
+const emailVerify = require("email-verify");
+
+function verifyEmailWithPromise(email) {
+  return new Promise((resolve, reject) => {
+    emailVerify.verify(email, (err, info) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(info);
+      }
+    });
+  });
+}
 
 async function generatePDF(id, donor) {
   try {
@@ -125,6 +138,17 @@ const sendMailPDF = async (req, res) => {
       return res.status(404).json({ message: "No Donors Found" });
     }
     console.log(donor);
+    const verificationInfo = await verifyEmailWithPromise(mail);
+
+    if (verificationInfo.success) {
+      console.log("Email is valid and deliverable.");
+    } else {
+      console.log("Email is not valid or not deliverable.");
+      return res.status(409).json({
+        message: "Email is not valid or not deliverable.",
+      });
+    }
+
     await generatePDF(id,donor);
     await sendMailTo(id,donor);
 

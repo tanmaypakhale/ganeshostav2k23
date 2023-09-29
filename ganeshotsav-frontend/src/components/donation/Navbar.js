@@ -35,6 +35,10 @@ function Navbar() {
     setAnchorElUser(null);
   };
 
+  const handleNavigate = (url) => {
+    window.location.href = "/admin";
+    setAnchorElUser(null);
+  };
   return (
     <AppBar position="static" style={{
         backgroundColor: '#E95737',

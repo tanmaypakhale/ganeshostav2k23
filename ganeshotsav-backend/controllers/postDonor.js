@@ -1,6 +1,20 @@
 const Donor = require("../models/donor");
 const nodemailer = require("nodemailer");
 const puppeteer = require("puppeteer");
+const emailVerify = require("email-verify");
+
+function verifyEmailWithPromise(email) {
+  return new Promise((resolve, reject) => {
+
+    emailVerify.verify(email, (err, info) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(info);
+      }
+    });
+  });
+}
 
 async function generatePDF(id,donor) {
   try {
@@ -84,6 +98,17 @@ const postDonor = async (req, res) => {
     const { name, mail, amount, hostelName, roomNumber, committeeMemberName } =
       req.body;
 
+    const verificationInfo = await verifyEmailWithPromise(mail);
+
+    if (verificationInfo.success) {
+      console.log("Email is valid and deliverable.");
+    } else {
+      console.log("Email is not valid or not deliverable.");
+      return res.status(409).json({
+        message: "Email is not valid or not deliverable.",
+      });
+    }
+
     const donor = await Donor.create({
       name,
       mail: mail.toLowerCase(),
@@ -96,6 +121,7 @@ const postDonor = async (req, res) => {
     const id = donor._id;
     await generatePDF(id,donor);
     await sendMailTo(id,donor);
+    
 
     res.status(201).json({
       donorDetails: {
@@ -110,6 +136,9 @@ const postDonor = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
+    res.status(400).json({
+      message: "Required fields are missing or empty",
+    });
   }
 };
 
